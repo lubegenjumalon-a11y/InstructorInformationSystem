@@ -1,0 +1,70 @@
+@model InstructorInfoSystem.Models.Instructor
+
+@{
+    ViewData["Title"] = "Add New Instructor";
+}
+
+<div class="container py-4" style="max-width: 850px;">
+
+    <div class="mb-4">
+        <a asp-action="Index" class="text-decoration-none text-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Instructor List
+        </a>
+        <h2 class="fw-bold mt-3 mb-1">Add New Instructor</h2>
+        <p class="text-secondary mb-0">
+            Fill in the information below to add a new instructor record.
+        </p>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+
+        <div class="p-4 text-white"
+             style="background: linear-gradient(135deg, #142b52, #2563a6);">
+            <div class="d-flex align-items-center gap-3">
+                <div class="rounded-3 p-3"
+                     style="background: rgba(255,255,255,0.15);">
+                    <i class="bi bi-person-plus fs-3"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-1">Instructor Details</h5>
+                    <small class="text-white-50">
+                        Enter the instructor's personal and professional information.
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+
+            <form asp-action="Create" method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger mb-4"
+                     role="alert"></div>
+
+                <partial name="_InstructorFields" model="Model" />
+
+                <hr class="my-4" />
+
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <a asp-action="Index"
+                       class="btn btn-light border px-4">
+                        <i class="bi bi-x-circle me-1"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-check-circle me-1"></i>
+                        Save Instructor
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

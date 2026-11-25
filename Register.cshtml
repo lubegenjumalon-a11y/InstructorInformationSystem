@@ -1,0 +1,129 @@
+@model InstructorInfoSystem.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<style>
+    .password-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .password-wrapper .form-input {
+        width: 100%;
+        padding-right: 65px;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 12px;
+        border: none;
+        background: transparent;
+        color: #db2777;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .toggle-password:hover {
+        color: #be185d;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Instructor Registration</h2>
+
+    <form id="registerForm" asp-action="Register" method="post">
+
+        <div asp-validation-summary="All"
+             class="validation-summary"></div>
+
+        <div class="form-group">
+            <label asp-for="FirstName"></label>
+            <input asp-for="FirstName" class="form-input" />
+            <span asp-validation-for="FirstName"
+                  class="field-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="LastName"></label>
+            <input asp-for="LastName" class="form-input" />
+            <span asp-validation-for="LastName"
+                  class="field-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-input" />
+            <span asp-validation-for="Email"
+                  class="field-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Password"></label>
+
+            <div class="password-wrapper">
+                <input asp-for="Password"
+                       type="password"
+                       class="form-input"
+                       id="Password" />
+
+                <button type="button"
+                        class="toggle-password"
+                        onclick="togglePassword('Password', this)">
+                    Show
+                </button>
+            </div>
+
+            <span asp-validation-for="Password"
+                  class="field-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ConfirmPassword"></label>
+
+            <div class="password-wrapper">
+                <input asp-for="ConfirmPassword"
+                       type="password"
+                       class="form-input"
+                       id="ConfirmPassword" />
+
+                <button type="button"
+                        class="toggle-password"
+                        onclick="togglePassword('ConfirmPassword', this)">
+                    Show
+                </button>
+            </div>
+
+            <span asp-validation-for="ConfirmPassword"
+                  class="field-error"></span>
+        </div>
+
+        <p id="jsMessage" class="js-message"></p>
+
+        <button type="submit" class="btn-primary">
+            Register
+        </button>
+
+    </form>
+</div>
+
+<script>
+    function togglePassword(inputId, button) {
+        const input = document.getElementById(inputId);
+
+        if (input.type === "password") {
+            input.type = "text";
+            button.textContent = "Hide";
+        } else {
+            input.type = "password";
+            button.textContent = "Show";
+        }
+    }
+</script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,669 @@
+
+@{
+    var isAuth = User.Identity?.IsAuthenticated == true;
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+    var navFirst = User.FindFirst("FirstName")?.Value ?? "User";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Information System</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+</head>
+
+<body class="@(isAuth ? "has-sidebar" : "no-sidebar")">
+
+    @if (isAuth)
+    {
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <!-- Brand -->
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="sidebar-brand">
+                <span>Information System</span>
+            </a>
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav">
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="@(controller == "Home" ? "active" : "")">
+
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a asp-controller="Instructors"
+                   asp-action="Index"
+                   class="@(controller == "Instructors" ? "active" : "")">
+
+                    <i class="bi bi-people"></i>
+                    <span>Instructors</span>
+                </a>
+
+                <a asp-controller="Account"
+                   asp-action="Profile"
+                   class="@(controller == "Account" && action == "Profile" ? "active" : "")">
+
+                    <i class="bi bi-person"></i>
+                    <span>My Profile</span>
+                </a>
+
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+
+                <div class="sidebar-user">
+                    <i class="bi bi-person-circle me-2"></i>
+                    <span>@navFirst</span>
+                </div>
+
+                <form asp-controller="Account"
+                      asp-action="Logout"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit" class="logout-button">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Logout</span>
+                    </button>
+
+                </form>
+
+            </div>
+
+        </aside>
+    }
+    else
+    {
+        <!-- LOGIN / REGISTER HEADER -->
+        <header class="site-header">
+
+            <a asp-controller="Account"
+               asp-action="Login"
+               class="site-brand">
+                Information System
+            </a>
+
+            <nav class="site-nav">
+
+                <a asp-controller="Account"
+                   asp-action="Login"
+                   class="@(action == "Login" ? "active" : "")">
+                    Login
+                </a>
+
+                <a asp-controller="Account"
+                   asp-action="Register"
+                   class="@(action == "Register" ? "active" : "")">
+                    Register
+                </a>
+
+            </nav>
+
+        </header>
+    }
+
+    <!-- MAIN CONTENT -->
+    <div class="content-wrap">
+
+        <main class="main-content">
+            @RenderBody()
+        </main>
+
+        <footer class="site-footer">
+            <p class="mb-0">
+                &copy; @DateTime.Now.Year - Information System
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- SUCCESS / NOTIFICATION MESSAGE -->
+    @if (TempData["Message"] is string message)
+    {
+        <div data-popup-message="@message" hidden></div>
+    }
+
+    <script src="~/js/site.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <style>
+
+        /* GLOBAL */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f3f4f6;
+            color: #1e293b;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 236px;
+            background: #1e293b;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            border-right: 1px solid #334155;
+        }
+
+        .sidebar-brand {
+            height: 70px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 700;
+            border-bottom: 1px solid #334155;
+        }
+
+        .sidebar-brand:hover {
+            color: #ffffff;
+        }
+
+        /* SIDEBAR NAVIGATION */
+
+        .sidebar-nav {
+            padding: 15px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 12px 13px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all .2s ease;
+        }
+
+        .sidebar-nav a i {
+            font-size: 17px;
+        }
+
+        .sidebar-nav a:hover {
+            background: #334155;
+            color: #ffffff;
+        }
+
+        .sidebar-nav a.active {
+            background: #0d9488;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .sidebar-nav a.active:hover {
+            background: #0f766e;
+        }
+
+        /* SIDEBAR FOOTER */
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 15px 8px 20px;
+            border-top: 1px solid #334155;
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            padding: 0 13px 12px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .sidebar-user i {
+            font-size: 17px;
+            color: #cbd5e1;
+        }
+
+        .logout-button {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 11px;
+            background: transparent;
+            color: #fca5a5;
+            border: 1px solid #dc2626;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all .2s ease;
+        }
+
+        .logout-button:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        /* MAIN CONTENT */
+
+        .content-wrap {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .has-sidebar .content-wrap {
+            margin-left: 236px;
+        }
+
+        .main-content {
+            flex: 1;
+            width: 100%;
+            min-width: 0;
+            padding: 20px;
+        }
+
+        .site-footer {
+            padding: 15px 20px;
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+            border-top: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+
+        /* LOGIN / REGISTER HEADER */
+
+        .site-header {
+            height: 65px;
+            background: #1e293b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+        }
+
+        .site-brand {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 17px;
+            text-decoration: none;
+        }
+
+        .site-brand:hover {
+            color: #ccfbf1;
+        }
+
+        .site-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .site-nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 9px 15px;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        .site-nav a:hover,
+        .site-nav a.active {
+            background: #0d9488;
+            color: #ffffff;
+        }
+
+        /* RESPONSIVE */
+
+        @@media (max-width: 768px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                bottom: auto;
+            }
+
+            .sidebar-brand {
+                height: 58px;
+            }
+
+            .sidebar-nav {
+                flex-direction: row;
+                flex-wrap: wrap;
+                padding: 10px;
+            }
+
+            .sidebar-nav a {
+                flex: 1 1 auto;
+                justify-content: center;
+                font-size: 12px;
+                padding: 10px 8px;
+            }
+
+            .sidebar-footer {
+                margin-top: 0;
+                padding: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .sidebar-user {
+                padding: 5px;
+            }
+
+            .logout-button {
+                width: auto;
+                padding: 8px 14px;
+            }
+
+            .has-sidebar .content-wrap {
+                margin-left: 0;
+            }
+
+            .main-content {
+                padding: 12px;
+            }
+        }
+
+
+        
+/* GLOBAL */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #fff7fb;
+    color: #831843;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 236px;
+    background: #831843;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    border-right: 1px solid #9d174d;
+}
+
+.sidebar-brand {
+    height: 70px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 700;
+    border-bottom: 1px solid #9d174d;
+}
+
+.sidebar-brand:hover {
+    color: #fce7f3;
+}
+
+/* SIDEBAR NAVIGATION */
+
+.sidebar-nav {
+    padding: 15px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 12px 13px;
+    color: #fbcfe8;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all .2s ease;
+}
+
+.sidebar-nav a i {
+    font-size: 17px;
+}
+
+.sidebar-nav a:hover {
+    background: #9d174d;
+    color: #ffffff;
+}
+
+.sidebar-nav a.active {
+    background: #db2777;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.sidebar-nav a.active:hover {
+    background: #ec4899;
+}
+
+/* SIDEBAR FOOTER */
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 15px 8px 20px;
+    border-top: 1px solid #9d174d;
+}
+
+.sidebar-user {
+    display: flex;
+    align-items: center;
+    padding: 0 13px 12px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.sidebar-user i {
+    font-size: 17px;
+    color: #fbcfe8;
+}
+
+.logout-button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 11px;
+    background: transparent;
+    color: #fda4af;
+    border: 1px solid #fda4af;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.logout-button:hover {
+    background: #db2777;
+    color: #ffffff;
+    border-color: #db2777;
+    cursor: pointer;
+}
+
+/* MAIN CONTENT */
+
+.content-wrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.has-sidebar .content-wrap {
+    margin-left: 236px;
+}
+
+.main-content {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    padding: 20px;
+}
+
+.site-footer {
+    padding: 15px 20px;
+    text-align: center;
+    color: #9d5477;
+    font-size: 12px;
+    border-top: 1px solid #fce7f3;
+    background: #ffffff;
+}
+
+/* LOGIN / REGISTER HEADER */
+
+.site-header {
+    height: 65px;
+    background: #831843;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+}
+
+.site-brand {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 17px;
+    text-decoration: none;
+}
+
+.site-brand:hover {
+    color: #fbcfe8;
+}
+
+.site-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.site-nav a {
+    color: #fbcfe8;
+    text-decoration: none;
+    padding: 9px 15px;
+    border-radius: 7px;
+    font-size: 14px;
+    transition: all .2s ease;
+}
+
+.site-nav a:hover,
+.site-nav a.active {
+    background: #db2777;
+    color: #ffffff;
+}
+
+/* RESPONSIVE */
+
+@@media (max-width: 768px) {
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        bottom: auto;
+    }
+
+    .sidebar-brand {
+        height: 58px;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 10px;
+    }
+
+    .sidebar-nav a {
+        flex: 1 1 auto;
+        justify-content: center;
+        font-size: 12px;
+        padding: 10px 8px;
+    }
+
+    .sidebar-footer {
+        margin-top: 0;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .sidebar-user {
+        padding: 5px;
+    }
+
+    .logout-button {
+        width: auto;
+        padding: 8px 14px;
+    }
+
+    .has-sidebar .content-wrap {
+        margin-left: 0;
+    }
+
+    .main-content {
+        padding: 12px;
+    }
+}
+
+    </style>
+
+</body>
+</html>

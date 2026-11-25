@@ -1,0 +1,119 @@
+@model InstructorInfoSystem.Models.Instructor
+
+@{
+    ViewData["Title"] = "Delete Instructor";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <div class="mb-4">
+                <a asp-controller="Instructors"
+                   asp-action="Index"
+                   class="text-decoration-none text-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to Instructor List
+                </a>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+
+                <div class="p-4 text-white"
+                     style="background: linear-gradient(135deg, #8b1e2d, #c0394b);">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-3 p-3"
+                             style="background: rgba(255,255,255,0.15);">
+                            <i class="bi bi-trash3 fs-3"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold mb-1">Delete Instructor</h4>
+                            <small class="text-white-50">
+                                Review the instructor information before proceeding.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="text-center mb-4">
+                        <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                             style="width: 75px; height: 75px; background: #fff0f0; color: #c0394b;">
+                            <i class="bi bi-person-x fs-1"></i>
+                        </div>
+
+                        <h5 class="fw-bold mb-1">@Model.FullName</h5>
+                        <p class="text-secondary mb-0">
+                            Instructor ID: @Model.InstructorId
+                        </p>
+                    </div>
+
+                    <div class="bg-light rounded-3 p-3 mb-4">
+                        <div class="row mb-3">
+                            <div class="col-5 text-secondary">Full Name</div>
+                            <div class="col-7 fw-semibold">@Model.FullName</div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-5 text-secondary">Designation</div>
+                            <div class="col-7 fw-semibold">@Model.Designation</div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-5 text-secondary">Contact Number</div>
+                            <div class="col-7 fw-semibold">@Model.ContactNumber</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-5 text-secondary">Email Address</div>
+                            <div class="col-7 fw-semibold text-break">@Model.Email</div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning border-0 rounded-3">
+                        <div class="d-flex gap-2">
+                            <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+                            <div>
+                                <strong>Are you sure?</strong>
+                                <p class="mb-0 mt-1">
+                                    You are about to delete
+                                    <strong>@Model.FullName</strong>.
+                                    This action cannot be undone.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form asp-action="Delete"
+                          asp-route-id="@Model.InstructorId"
+                          method="post"
+                          onsubmit="return confirm('Are you sure you want to permanently delete this instructor?');">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="id"
+                               value="@Model.InstructorId" />
+
+                        <div class="d-flex flex-column flex-sm-row justify-content-end gap-2 mt-4">
+                            <a asp-controller="Instructors"
+                               asp-action="Index"
+                               class="btn btn-light border px-4">
+                                <i class="bi bi-x-circle me-1"></i>
+                                Cancel
+                            </a>
+
+                            <button type="submit" class="btn btn-danger px-4">
+                                <i class="bi bi-trash me-1"></i>
+                                Confirm Delete
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

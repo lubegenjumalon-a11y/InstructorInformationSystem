@@ -1,0 +1,389 @@
+﻿@{
+    ViewData["Title"] = "My Profile";
+
+    var firstName = ViewBag.FirstName?.ToString() ?? "";
+    var lastName = ViewBag.LastName?.ToString() ?? "";
+    var email = ViewBag.Email?.ToString() ?? "";
+    var accountId = ViewBag.AccountId?.ToString() ?? "";
+
+    var initial = !string.IsNullOrWhiteSpace(firstName)
+        ? firstName.Substring(0, 1).ToUpper()
+        : "U";
+}
+
+<div class="profile-page">
+
+    <div class="profile-heading">
+        <div>
+            <h2>My Profile</h2>
+            <p>Manage and view your registered account information.</p>
+        </div>
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="btn-back">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+    <div class="profile-card">
+
+        <div class="profile-cover">
+            <div class="profile-avatar">
+                @initial
+            </div>
+        </div>
+
+        <div class="profile-identity">
+            <h3>@firstName @lastName</h3>
+            <p>Registered User</p>
+
+            <span class="status-label">
+                <span class="status-dot"></span>
+                Active Account
+            </span>
+        </div>
+
+        <div class="profile-divider"></div>
+
+        <div class="profile-details">
+
+            <h5>Account Information</h5>
+
+            <p class="section-description">
+                Your personal and account details.
+            </p>
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+                    <span class="detail-label">Account ID</span>
+                    <strong>@accountId</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">First Name</span>
+                    <strong>@firstName</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Last Name</span>
+                    <strong>@lastName</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Email Address</span>
+                    <strong>@email</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Account Status</span>
+                    <strong class="active-text">Active</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Account Type</span>
+                    <strong>Registered User</strong>
+                </div>
+
+            </div>
+
+            <div class="security-notice">
+                <div class="security-icon">🔒</div>
+
+                <div>
+                    <strong>Account Security</strong>
+                    <p>
+                        Your password is stored as a secure hash
+                        and is not displayed on this page.
+                    </p>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="btn-secondary">
+                    Back to Dashboard
+                </a>
+
+                <a asp-controller="Instructors"
+                   asp-action="Index"
+                   class="btn-primary">
+                    Manage Instructors →
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-page {
+        max-width: 1050px;
+        margin: 35px auto;
+        padding: 0 20px;
+        color: #831843;
+    }
+
+    .profile-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+        .profile-heading h2 {
+            font-size: 27px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #831843;
+        }
+
+        .profile-heading p {
+            color: #9d5477;
+            margin: 0;
+        }
+
+    .btn-back {
+        text-decoration: none;
+        border: 1px solid #f3c4d9;
+        color: #9d174d;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        background: white;
+        transition: .2s;
+    }
+
+        .btn-back:hover {
+            background: #fce7f3;
+            color: #831843;
+        }
+
+    .profile-card {
+        background: white;
+        border: 1px solid #fce7f3;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(190, 24, 93, .07);
+    }
+
+    .profile-cover {
+        height: 150px;
+        background: linear-gradient(120deg, #be185d, #ec4899, #f9a8d4);
+        position: relative;
+    }
+
+    .profile-avatar {
+        position: absolute;
+        bottom: -42px;
+        left: 40px;
+        width: 90px;
+        height: 90px;
+        background: white;
+        color: #db2777;
+        border: 5px solid white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 35px;
+        font-weight: 700;
+        box-shadow: 0 3px 12px rgba(190, 24, 93, .15);
+    }
+
+    .profile-identity {
+        padding: 55px 40px 20px;
+    }
+
+        .profile-identity h3 {
+            font-size: 23px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #831843;
+        }
+
+        .profile-identity p {
+            color: #9d5477;
+            margin-bottom: 12px;
+        }
+
+    .status-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: #dcfce7;
+        color: #15803d;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-dot {
+        width: 7px;
+        height: 7px;
+        background: #16a34a;
+        border-radius: 50%;
+    }
+
+    .profile-divider {
+        border-top: 1px solid #fce7f3;
+    }
+
+    .profile-details {
+        padding: 30px 40px 35px;
+    }
+
+        .profile-details h5 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #831843;
+        }
+
+    .section-description {
+        color: #9d5477;
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+
+    .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .detail-item {
+        padding: 17px;
+        background: #fff7fb;
+        border: 1px solid #fce7f3;
+        border-radius: 9px;
+        transition: .2s;
+    }
+
+        .detail-item:hover {
+            border-color: #f9a8d4;
+            background: #fff1f7;
+        }
+
+    .detail-label {
+        display: block;
+        font-size: 12px;
+        color: #9d5477;
+        margin-bottom: 7px;
+    }
+
+    .detail-item strong {
+        font-size: 14px;
+        color: #831843;
+        overflow-wrap: anywhere;
+    }
+
+    .active-text {
+        color: #15803d !important;
+    }
+
+    .security-notice {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        background: #fdf2f8;
+        border: 1px solid #fbcfe8;
+        padding: 18px;
+        border-radius: 9px;
+        margin-top: 25px;
+    }
+
+    .security-icon {
+        font-size: 23px;
+    }
+
+    .security-notice strong {
+        color: #9d174d;
+    }
+
+    .security-notice p {
+        font-size: 13px;
+        color: #9d5477;
+        margin: 5px 0 0;
+    }
+
+    .profile-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 28px;
+        flex-wrap: wrap;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        padding: 11px 17px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: .2s;
+    }
+
+    .btn-primary {
+        background: #db2777;
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background: #be185d;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+    .btn-secondary {
+        border: 1px solid #f3c4d9;
+        color: #9d174d;
+        background: white;
+    }
+
+        .btn-secondary:hover {
+            background: #fce7f3;
+            color: #831843;
+        }
+
+    @@media(max-width: 600px) {
+        .profile-heading {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .profile-cover {
+            height: 120px;
+        }
+
+        .profile-avatar {
+            left: 22px;
+        }
+
+        .profile-identity,
+        .profile-details {
+            padding-left: 22px;
+            padding-right: 22px;
+        }
+
+        .detail-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .profile-actions {
+            flex-direction: column;
+        }
+
+            .profile-actions a {
+                text-align: center;
+            }
+    }
+</style>
